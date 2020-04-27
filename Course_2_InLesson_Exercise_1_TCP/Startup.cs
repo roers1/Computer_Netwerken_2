@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace Course_2_InLesson_Exercise_1_TCP
+namespace Course_2_InLesson_Exercise_1_TCP_Server
 {
 	class Startup
 	{

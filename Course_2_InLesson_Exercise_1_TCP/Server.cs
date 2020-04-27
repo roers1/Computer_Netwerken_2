@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Course_2_InLesson_Exercise_1_TCP
+namespace Course_2_InLesson_Exercise_1_TCP_Server
 {
 	class Server
 	{
