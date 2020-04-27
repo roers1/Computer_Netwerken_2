@@ -3,17 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HTTP_Server", "HTTP_Server\HTTP_Server.csproj", "{CE218816-D931-42DA-B84E-5143F6388552}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course_1_TCPView", "Course_1_TCPView\Course_1_TCPView.csproj", "{E9ED1557-B46B-464C-863E-7A4384F7AEED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course_2_InLesson_Exercise_1_TCP_Server", "Course_2_InLesson_Exercise_1_TCP\Course_2_InLesson_Exercise_1_TCP_Server.csproj", "{EFBC1294-C03D-41F8-9B7C-601632D53195}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course_2_InLesson_Exercise_1_TCP_Client", "Course_2_InLesson_Exercise_1_TCP_Client\Course_2_InLesson_Exercise_1_TCP_Client.csproj", "{B8094D58-418A-4865-A1D5-698B0A439334}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course_2_InLesson_Exercise_1_TCP_Client", "Course_2_InLesson_Exercise_1_TCP_Client\Course_2_InLesson_Exercise_1_TCP_Client.csproj", "{B8094D58-418A-4865-A1D5-698B0A439334}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course_2_InLesson_Exercise_2_Non_Blocking_UDP_Server", "Course_2_InLesson_Exercise_2_Non_Blocking_UDP_Server\Course_2_InLesson_Exercise_2_Non_Blocking_UDP_Server.csproj", "{BB2D9855-EB6F-446D-B880-867BE3551AF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course_2_InLesson_Exercise_2_Non_Blocking_UDP_Server", "Course_2_InLesson_Exercise_2_Non_Blocking_UDP_Server\Course_2_InLesson_Exercise_2_Non_Blocking_UDP_Server.csproj", "{BB2D9855-EB6F-446D-B880-867BE3551AF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course_2_InLesson_Exercise_2_Non_Blocking_UDP_Client", "Course_2_InLesson_Exercise_2_Non_Blocking_UDP_Client\Course_2_InLesson_Exercise_2_Non_Blocking_UDP_Client.csproj", "{63422B0C-F60F-43E3-8538-07D29FAADA65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course_2_InLesson_Exercise_2_Non_Blocking_UDP_Client", "Course_2_InLesson_Exercise_2_Non_Blocking_UDP_Client\Course_2_InLesson_Exercise_2_Non_Blocking_UDP_Client.csproj", "{63422B0C-F60F-43E3-8538-07D29FAADA65}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course_2_InLesson_Exercise_1_TCP_Server", "Course_2_InLesson_Exercise_1_TCP_Server\Course_2_InLesson_Exercise_1_TCP_Server.csproj", "{F45437DD-430E-4A80-A1D1-7FBE49A01DEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,18 +19,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CE218816-D931-42DA-B84E-5143F6388552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE218816-D931-42DA-B84E-5143F6388552}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE218816-D931-42DA-B84E-5143F6388552}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE218816-D931-42DA-B84E-5143F6388552}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9ED1557-B46B-464C-863E-7A4384F7AEED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E9ED1557-B46B-464C-863E-7A4384F7AEED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9ED1557-B46B-464C-863E-7A4384F7AEED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9ED1557-B46B-464C-863E-7A4384F7AEED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EFBC1294-C03D-41F8-9B7C-601632D53195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EFBC1294-C03D-41F8-9B7C-601632D53195}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EFBC1294-C03D-41F8-9B7C-601632D53195}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EFBC1294-C03D-41F8-9B7C-601632D53195}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B8094D58-418A-4865-A1D5-698B0A439334}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8094D58-418A-4865-A1D5-698B0A439334}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8094D58-418A-4865-A1D5-698B0A439334}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +35,10 @@ Global
 		{63422B0C-F60F-43E3-8538-07D29FAADA65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63422B0C-F60F-43E3-8538-07D29FAADA65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63422B0C-F60F-43E3-8538-07D29FAADA65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F45437DD-430E-4A80-A1D1-7FBE49A01DEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F45437DD-430E-4A80-A1D1-7FBE49A01DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F45437DD-430E-4A80-A1D1-7FBE49A01DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F45437DD-430E-4A80-A1D1-7FBE49A01DEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
