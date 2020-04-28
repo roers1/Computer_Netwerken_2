@@ -80,32 +80,32 @@ namespace Course_2_Tic_Tac_Toe_Host
 		}
 		public override string ToString()
 		{
-			string output = "";
+			string visualBoard = "";
 			for (int i = 0; i < board.GetLength(0); i++)
 			{
-				for (int j = 0; j < board.GetLength(1); i++)
+				for (int j = 0; j < board.GetLength(1); j++)
 				{
 					if (board[i, j] == null)
 					{
-						output += "   | ";
+						visualBoard += "   | ";
 					}
 					switch (j)
 					{
 						case 2:
-							output += board[i, j];
+							visualBoard += board[i, j];
 							break;
 						default:
-							output += board[i, j] + " | ";
+							visualBoard += board[i, j] + " | ";
 							break;
 					}
 				}
 				if (i <= 2)
 				{
-					output += System.Environment.NewLine;
-					output += "------------";
+					visualBoard += System.Environment.NewLine;
+					visualBoard += "------------";
 				}
 			}
-			return output;
+			return visualBoard;
 		}
 	}
 }

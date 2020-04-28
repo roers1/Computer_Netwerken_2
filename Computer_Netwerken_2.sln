@@ -13,9 +13,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course_2_InLesson_Exercise_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course_2_InLesson_Exercise_1_TCP_Server", "Course_2_InLesson_Exercise_1_TCP_Server\Course_2_InLesson_Exercise_1_TCP_Server.csproj", "{F45437DD-430E-4A80-A1D1-7FBE49A01DEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course_2_Tic_Tac_Toe_Host", "Course_2_Tic_Tac_Toe_Host\Course_2_Tic_Tac_Toe_Host.csproj", "{BF7B4E95-9ACE-477C-8315-EB1F190A46DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course_2_Tic_Tac_Toe_Host", "Course_2_Tic_Tac_Toe_Host\Course_2_Tic_Tac_Toe_Host.csproj", "{BF7B4E95-9ACE-477C-8315-EB1F190A46DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course_2_Tic_Tac_Toe_Client", "Course_2_Tic_Tac_Toe_Client\Course_2_Tic_Tac_Toe_Client.csproj", "{6F87CD1C-C36E-4C38-9AFF-C6850B5CA90C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course_2_Tic_Tac_Toe_Client", "Course_2_Tic_Tac_Toe_Client\Course_2_Tic_Tac_Toe_Client.csproj", "{6F87CD1C-C36E-4C38-9AFF-C6850B5CA90C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A6657BAD-6479-4C7C-BFC0-12734D191A42}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
