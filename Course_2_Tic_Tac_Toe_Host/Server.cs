@@ -98,7 +98,7 @@ namespace Course_2_Tic_Tac_Toe_Host
 				var data = Encoding.ASCII.GetString(_bytes, 0, i);
 				string[] move = {data};
 
-				Game.makeMove(int.Parse(move[0]), int.Parse(move[1]), Player, Opponent);
+				Game.MakeMove(int.Parse(move[0]), int.Parse(move[1]), Player, Opponent);
 				CheckWinner();
 				Console.WriteLine(Game);
 			}
@@ -117,7 +117,7 @@ namespace Course_2_Tic_Tac_Toe_Host
 			string[] move = {moveToSend};
 			var moveData = Encoding.ASCII.GetBytes(moveToSend);
 
-			Game.makeMove(int.Parse(move[0]), int.Parse(move[1]), Player, Opponent);
+			Game.MakeMove(int.Parse(move[0]), int.Parse(move[1]), Player, Opponent);
 
 			stream.Write(moveData, 0, moveData.Length);
 

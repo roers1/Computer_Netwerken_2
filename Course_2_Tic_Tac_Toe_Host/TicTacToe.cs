@@ -4,29 +4,31 @@ using System.Text;
 
 namespace Course_2_Tic_Tac_Toe_Host
 {
-	class TicTacToe
+	internal class TicTacToe
 	{
-		private string[,] board = new string[3, 3];
+		private readonly string[,] _board = new string[3, 3];
 
-		public TicTacToe() { }
-
-		public Boolean makeMove(int x, int y, string letter, string opponentLetter)
+		public TicTacToe()
 		{
-			if (board[x, y] == letter || board[x, y] == opponentLetter)
+		}
+
+		public bool MakeMove(int x, int y, string letter, string opponentLetter)
+		{
+			if (_board[x, y] == letter || _board[x, y] == opponentLetter)
 			{
 				return false;
 			}
 
-			board[x, y] = letter;
+			_board[x, y] = letter;
 			return true;
 		}
 
-		public Boolean IsWinner(string letter)
+		public bool IsWinner(string letter)
 		{
 			return RecursiveSolution(letter, 0, 0, 0);
 		}
 
-		private Boolean RecursiveSolution(string letter, int matches, int x, int y)
+		private bool RecursiveSolution(string letter, int matches, int x, int y)
 		{
 			if (matches == 3)
 			{
@@ -34,58 +36,61 @@ namespace Course_2_Tic_Tac_Toe_Host
 			}
 
 			//check horizontale winst
-			while (y < board.GetLength(1))
+			while (y < _board.GetLength(1))
 			{
-				if (board[x, y] == letter)
+				if (_board[x, y] == letter)
 				{
 					return RecursiveSolution(letter, matches++, x, y++);
 				}
+
 				break;
 			}
 
 			//check verticale winst
-			while (x < board.GetLength(0))
+			while (x < _board.GetLength(0))
 			{
-				if (board[x, y] == letter)
+				if (_board[x, y] == letter)
 				{
 					return RecursiveSolution(letter, matches++, x++, y);
 				}
+
 				break;
 			}
 
 			//check diagonale winst 1
-			while (x < board.GetLength(0) && y < board.GetLength(1))
+			while (x < _board.GetLength(0) && y < _board.GetLength(1))
 			{
-				if (board[x, y] == letter)
+				if (_board[x, y] == letter)
 				{
 					return RecursiveSolution(letter, matches++, x++, y++);
 				}
+
 				break;
 			}
 
 			//check diagonale winst
-			if (x == 0 && y == 3)
+			if (x != 0 || y != 3) return false;
+			while (x < _board.GetLength(0) && y < _board.GetLength(1))
 			{
-				while (x < board.GetLength(0) && y < board.GetLength(1))
+				if (_board[x, y] == letter)
 				{
-					if (board[x, y] == letter)
-					{
-						return RecursiveSolution(letter, matches++, x--, y--);
-					}
-					break;
+					return RecursiveSolution(letter, matches++, x--, y--);
 				}
+
+				break;
 			}
 
 			return false;
 		}
+
 		public override string ToString()
 		{
-			string visualBoard = "";
-			for (int i = 0; i < board.GetLength(0); i++)
+			var visualBoard = "";
+			for (var i = 0; i < _board.GetLength(0); i++)
 			{
-				for (int j = 0; j < board.GetLength(1)-1; j++)
+				for (var j = 0; j < _board.GetLength(1) - 1; j++)
 				{
-					if (board[i, j] == null)
+					if (_board[i, j] == null)
 					{
 						visualBoard += "   | ";
 					}
@@ -94,21 +99,20 @@ namespace Course_2_Tic_Tac_Toe_Host
 						switch (j)
 						{
 							case 2:
-								visualBoard += board[i, j];
+								visualBoard += _board[i, j];
 								break;
 							default:
-								visualBoard += board[i, j] + " | ";
+								visualBoard += _board[i, j] + " | ";
 								break;
 						}
 					}
+				}
 
-				}
-				if (i < 2)
-				{
-					visualBoard += System.Environment.NewLine;
-					visualBoard += "------------\r\n";
-				}
+				if (i >= 2) continue;
+				visualBoard += System.Environment.NewLine;
+				visualBoard += "------------\r\n";
 			}
+
 			return visualBoard;
 		}
 	}
