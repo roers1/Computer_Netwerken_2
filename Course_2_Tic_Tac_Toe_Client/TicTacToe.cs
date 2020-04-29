@@ -23,10 +23,10 @@ namespace Course_2_Tic_Tac_Toe_Client
 
 		public Boolean IsWinner(string letter)
 		{
-			return recursiveSolution(letter, 0, 0, 0);
+			return RecursiveSolution(letter, 0, 0, 0);
 		}
 
-		private Boolean recursiveSolution(string letter, int matches, int x, int y)
+		private Boolean RecursiveSolution(string letter, int matches, int x, int y)
 		{
 			if (matches == 3)
 			{
@@ -38,7 +38,7 @@ namespace Course_2_Tic_Tac_Toe_Client
 			{
 				if (board[x, y] == letter)
 				{
-					return recursiveSolution(letter, matches++, x, y++);
+					return RecursiveSolution(letter, matches++, x, y++);
 				}
 				break;
 			}
@@ -48,7 +48,7 @@ namespace Course_2_Tic_Tac_Toe_Client
 			{
 				if (board[x, y] == letter)
 				{
-					return recursiveSolution(letter, matches++, x++, y);
+					return RecursiveSolution(letter, matches++, x++, y);
 				}
 				break;
 			}
@@ -58,7 +58,7 @@ namespace Course_2_Tic_Tac_Toe_Client
 			{
 				if (board[x, y] == letter)
 				{
-					return recursiveSolution(letter, matches++, x++, y++);
+					return RecursiveSolution(letter, matches++, x++, y++);
 				}
 				break;
 			}
@@ -70,7 +70,7 @@ namespace Course_2_Tic_Tac_Toe_Client
 				{
 					if (board[x, y] == letter)
 					{
-						return recursiveSolution(letter, matches++, x--, y--);
+						return RecursiveSolution(letter, matches++, x--, y--);
 					}
 					break;
 				}
@@ -80,32 +80,36 @@ namespace Course_2_Tic_Tac_Toe_Client
 		}
 		public override string ToString()
 		{
-			string output = "";
+			string visualBoard = "";
 			for (int i = 0; i < board.GetLength(0); i++)
 			{
-				for (int j = 0; j < board.GetLength(1); i++)
+				for (int j = 0; j < board.GetLength(1) - 1; j++)
 				{
-					if(board[i,j] == null)
+					if (board[i, j] == null)
 					{
-						output += "   | ";
+						visualBoard += "   | ";
 					}
-					switch (j)
+					else
 					{
-						case 2:
-							output += board[i, j];
-							break;
-						default:
-							output += board[i, j] + " | ";
-							break;
+						switch (j)
+						{
+							case 2:
+								visualBoard += board[i, j];
+								break;
+							default:
+								visualBoard += board[i, j] + " | ";
+								break;
+						}
 					}
+
 				}
-				if (i <= 2)
+				if (i < 2)
 				{
-					output += System.Environment.NewLine;
-					output += "------------";
+					visualBoard += System.Environment.NewLine;
+					visualBoard += "------------\r\n";
 				}
 			}
-			return output;
+			return visualBoard;
 		}
 	}
 }

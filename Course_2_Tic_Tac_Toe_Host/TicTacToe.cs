@@ -23,10 +23,10 @@ namespace Course_2_Tic_Tac_Toe_Host
 
 		public Boolean IsWinner(string letter)
 		{
-			return recursiveSolution(letter, 0, 0, 0);
+			return RecursiveSolution(letter, 0, 0, 0);
 		}
 
-		private Boolean recursiveSolution(string letter, int matches, int x, int y)
+		private Boolean RecursiveSolution(string letter, int matches, int x, int y)
 		{
 			if (matches == 3)
 			{
@@ -38,7 +38,7 @@ namespace Course_2_Tic_Tac_Toe_Host
 			{
 				if (board[x, y] == letter)
 				{
-					return recursiveSolution(letter, matches++, x, y++);
+					return RecursiveSolution(letter, matches++, x, y++);
 				}
 				break;
 			}
@@ -48,7 +48,7 @@ namespace Course_2_Tic_Tac_Toe_Host
 			{
 				if (board[x, y] == letter)
 				{
-					return recursiveSolution(letter, matches++, x++, y);
+					return RecursiveSolution(letter, matches++, x++, y);
 				}
 				break;
 			}
@@ -58,7 +58,7 @@ namespace Course_2_Tic_Tac_Toe_Host
 			{
 				if (board[x, y] == letter)
 				{
-					return recursiveSolution(letter, matches++, x++, y++);
+					return RecursiveSolution(letter, matches++, x++, y++);
 				}
 				break;
 			}
@@ -70,7 +70,7 @@ namespace Course_2_Tic_Tac_Toe_Host
 				{
 					if (board[x, y] == letter)
 					{
-						return recursiveSolution(letter, matches++, x--, y--);
+						return RecursiveSolution(letter, matches++, x--, y--);
 					}
 					break;
 				}
@@ -83,26 +83,30 @@ namespace Course_2_Tic_Tac_Toe_Host
 			string visualBoard = "";
 			for (int i = 0; i < board.GetLength(0); i++)
 			{
-				for (int j = 0; j < board.GetLength(1); j++)
+				for (int j = 0; j < board.GetLength(1)-1; j++)
 				{
 					if (board[i, j] == null)
 					{
 						visualBoard += "   | ";
 					}
-					switch (j)
+					else
 					{
-						case 2:
-							visualBoard += board[i, j];
-							break;
-						default:
-							visualBoard += board[i, j] + " | ";
-							break;
+						switch (j)
+						{
+							case 2:
+								visualBoard += board[i, j];
+								break;
+							default:
+								visualBoard += board[i, j] + " | ";
+								break;
+						}
 					}
+
 				}
-				if (i <= 2)
+				if (i < 2)
 				{
 					visualBoard += System.Environment.NewLine;
-					visualBoard += "------------";
+					visualBoard += "------------\r\n";
 				}
 			}
 			return visualBoard;

@@ -25,8 +25,7 @@ namespace Course_2_InLesson_Exercise_1_TCP_Server
 				//Server aanzetten en laten luisteren
 				server.Start();
 
-				Byte[] bytes = new Byte[256];
-				String data = null;
+				byte[] bytes = new byte[256];
 
 				while (true)
 				{
@@ -35,8 +34,6 @@ namespace Course_2_InLesson_Exercise_1_TCP_Server
 					//Accept incoming connection request if one is sended
 					TcpClient client = server.AcceptTcpClient();
 					Console.WriteLine("Connected!");
-
-					data = null;
 
 					//Get a stream object for reading and writing
 					NetworkStream stream = client.GetStream();
@@ -47,7 +44,7 @@ namespace Course_2_InLesson_Exercise_1_TCP_Server
 					while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
 					{
 						// Translate data bytes to a ASCII string.
-						data = Encoding.ASCII.GetString(bytes, 0, i);
+						var data = Encoding.ASCII.GetString(bytes, 0, i);
 
 
 						Console.WriteLine(data);

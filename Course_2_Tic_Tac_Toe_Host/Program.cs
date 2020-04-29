@@ -10,6 +10,7 @@ namespace Course_2_Tic_Tac_Toe_Host
 		private static void Main(string[] args)
 		{
 			IPAddress ipAddress = null;
+			TicTacToe game = new TicTacToe();
 
 			Console.Write("Welcome to TicTacToe!\r\n" +
 			              "To start the game please enter the ip you would like to host you game on >");

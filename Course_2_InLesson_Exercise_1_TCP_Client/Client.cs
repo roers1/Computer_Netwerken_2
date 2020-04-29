@@ -8,7 +8,7 @@ namespace Course_2_InLesson_Exercise_1_TCP_Client
     class Client
     {
         public int Port { get; set; }
-        public String LocalAddr { get; set; }
+        public string LocalAddr { get; set; }
         public Client(int port, string localAddr)
         {
             this.Port = port;
@@ -19,7 +19,7 @@ namespace Course_2_InLesson_Exercise_1_TCP_Client
             while (true)
             {
                 Console.Write("Type your message: ");
-                String message = Console.ReadLine();
+                string message = Console.ReadLine();
 
                 Connect(LocalAddr, message);
 
@@ -30,7 +30,7 @@ namespace Course_2_InLesson_Exercise_1_TCP_Client
 
             }
 
-            static void Connect(String server, String message)
+            static void Connect(string server, string message)
             {
                 try
                 {
