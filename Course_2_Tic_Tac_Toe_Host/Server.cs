@@ -58,15 +58,19 @@ namespace Course_2_Tic_Tac_Toe_Host
 				NetworkStream stream = client.GetStream();
 
 				Console.WriteLine("Connected!\r\n" +
-				                  "You can make a move");
+								  "You can make a move");
 
 				while (!OpponentWon && !Won)
 				{
 					Turn(stream);
 
-					if (!OpponentWon)
+					if (!OpponentWon && !Won)
 					{
 						EnemyTurn(stream);
+					}
+					else
+					{
+						stream.Close();
 					}
 				}
 
@@ -92,29 +96,54 @@ namespace Course_2_Tic_Tac_Toe_Host
 		private void EnemyTurn(NetworkStream stream)
 		{
 			Console.WriteLine("Waiting for opponent to make a turn...");
-			int i;
-			while ((i = stream.Read(_bytes, 0, _bytes.Length)) != 0)
-			{
-				var data = Encoding.ASCII.GetString(_bytes, 0, i);
-				var move = data.ToCharArray();
+			var i = stream.Read(_bytes, 0, _bytes.Length);
 
+			var data = Encoding.ASCII.GetString(_bytes, 0, i);
+			var move = data.ToCharArray();
+
+			if (move.Length != 2)
+			{
+				Console.WriteLine("opponent send invalid data, please restart the game...");
+			}
+			else
+			{
 				Game.MakeMove((int)char.GetNumericValue(move[0]), (int)char.GetNumericValue(move[1]), Opponent, Player);
 
 				CheckWinner();
 				Console.WriteLine(Game);
 			}
-
-			CheckWinner();
 		}
 
 		private void Turn(NetworkStream stream)
 		{
 			string moveToSend = null;
-			Console.Write("Please give the X coordinate for the move >");
-			moveToSend += Console.ReadLine();
+			while (true)
+			{
+				Console.Write("Please give the X coordinate for the move >");
+				var input = Console.ReadLine();
 
-			Console.Write("Please give the Y coordinate for the move >");
-			moveToSend += Console.ReadLine();
+				if (InputIsValid(input))
+				{
+					moveToSend += input;
+					break;
+				}
+
+				Console.WriteLine("Please give valid coordinates (0,1,2)");
+			}
+
+			while (true)
+			{
+				Console.Write("Please give the Y coordinate for the move >");
+				var input = Console.ReadLine();
+
+				if (InputIsValid(input))
+				{
+					moveToSend += input;
+					break;
+				}
+
+				Console.WriteLine("Please give valid coordinates (0,1,2)");
+			}
 
 			var move = moveToSend.ToCharArray();
 			var moveData = Encoding.ASCII.GetBytes(moveToSend);
@@ -125,6 +154,11 @@ namespace Course_2_Tic_Tac_Toe_Host
 
 			Console.Write(Game);
 			CheckWinner();
+		}
+
+		private bool InputIsValid(string input)
+		{
+			return input == "0" || input == "1" || input == "2";
 		}
 
 		private void CheckWinner()

@@ -40,7 +40,7 @@ namespace Course_2_Tic_Tac_Toe_Host
 			{
 				if (_board[x, y] == letter)
 				{
-					return RecursiveSolution(letter, matches++, x, y++);
+					return RecursiveSolution(letter, matches + 1, x, y + 1);
 				}
 
 				break;
@@ -51,7 +51,7 @@ namespace Course_2_Tic_Tac_Toe_Host
 			{
 				if (_board[x, y] == letter)
 				{
-					return RecursiveSolution(letter, matches++, x++, y);
+					return RecursiveSolution(letter, matches + 1, x + 1, y);
 				}
 
 				break;
@@ -62,7 +62,7 @@ namespace Course_2_Tic_Tac_Toe_Host
 			{
 				if (_board[x, y] == letter)
 				{
-					return RecursiveSolution(letter, matches++, x++, y++);
+					return RecursiveSolution(letter, matches + 1, x + 1, y + 1);
 				}
 
 				break;
@@ -74,7 +74,7 @@ namespace Course_2_Tic_Tac_Toe_Host
 			{
 				if (_board[x, y] == letter)
 				{
-					return RecursiveSolution(letter, matches++, x--, y--);
+					return RecursiveSolution(letter, matches + 1, x - 1, y - 1);
 				}
 
 				break;
@@ -117,4 +117,5 @@ namespace Course_2_Tic_Tac_Toe_Host
 			return visualBoard;
 		}
 	}
+
 }
