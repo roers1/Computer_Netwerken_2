@@ -8,7 +8,7 @@ namespace Course_2_Tic_Tac_Toe_Host
 {
 	class Server
 	{
-		private readonly byte[] _bytes;
+		private readonly byte[] _bytes = new byte[256];
 
 		private int Port { get; set; }
 		private IPAddress LocalAddr { get; set; }
@@ -98,7 +98,7 @@ namespace Course_2_Tic_Tac_Toe_Host
 				var data = Encoding.ASCII.GetString(_bytes, 0, i);
 				var move = data.ToCharArray();
 
-				Game.MakeMove(move[0], move[1], Player, Opponent);
+				Game.MakeMove((int)char.GetNumericValue(move[0]), (int)char.GetNumericValue(move[1]), Opponent, Player);
 
 				CheckWinner();
 				Console.WriteLine(Game);
@@ -115,13 +115,15 @@ namespace Course_2_Tic_Tac_Toe_Host
 
 			Console.Write("Please give the Y coordinate for the move >");
 			moveToSend += Console.ReadLine();
+
 			var move = moveToSend.ToCharArray();
 			var moveData = Encoding.ASCII.GetBytes(moveToSend);
 
-			Game.MakeMove(move[0], move[1], Player, Opponent);
+			Game.MakeMove((int)char.GetNumericValue(move[0]), (int)char.GetNumericValue(move[1]), Player, Opponent);
 
 			stream.Write(moveData, 0, moveData.Length);
 
+			Console.Write(Game);
 			CheckWinner();
 		}
 

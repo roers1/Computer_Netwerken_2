@@ -88,9 +88,9 @@ namespace Course_2_Tic_Tac_Toe_Client
 			var visualBoard = "";
 			for (var i = 0; i < _board.GetLength(0); i++)
 			{
-				for (var j = 0; j < _board.GetLength(1) - 1; j++)
+				for (var j = 0; j < _board.GetLength(1); j++)
 				{
-					if (_board[i, j] == null)
+					if (_board[i, j] == null && j != 2)
 					{
 						visualBoard += "   | ";
 					}
@@ -113,6 +113,7 @@ namespace Course_2_Tic_Tac_Toe_Client
 				visualBoard += "------------\r\n";
 			}
 
+			visualBoard += "\r\n";
 			return visualBoard;
 		}
 	}

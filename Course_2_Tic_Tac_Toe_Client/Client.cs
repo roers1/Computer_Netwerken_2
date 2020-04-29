@@ -25,14 +25,7 @@ namespace Course_2_Tic_Tac_Toe_Client
 			this.Game = new TicTacToe();
 			this.Player = player;
 
-			if (player == "X")
-			{
-				Opponent = "O";
-			}
-			else
-			{
-				Opponent = "X";
-			}
+			Opponent = player == "X" ? "O" : "X";
 
 			this.Won = false;
 			this.OpponentWon = false;
@@ -82,7 +75,8 @@ namespace Course_2_Tic_Tac_Toe_Client
 				var data = Encoding.ASCII.GetString(_bytes, 0, i);
 				var move = data.ToCharArray();
 
-				Game.MakeMove(move[0], move[1], Player, Opponent);
+				Game.MakeMove((int)char.GetNumericValue(move[0]), (int)char.GetNumericValue(move[1]), Opponent, Player);
+
 				CheckWinner();
 				Console.WriteLine(Game);
 			}
@@ -101,7 +95,7 @@ namespace Course_2_Tic_Tac_Toe_Client
 			var move = moveToSend.ToCharArray();
 			var moveData = Encoding.ASCII.GetBytes(moveToSend);
 
-			Game.MakeMove(move[0], move[1], Player, Opponent);
+			Game.MakeMove((int)char.GetNumericValue(move[0]), (int)char.GetNumericValue(move[1]), Player, Opponent);
 
 			stream.Write(moveData, 0, moveData.Length);
 
