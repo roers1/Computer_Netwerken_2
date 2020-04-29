@@ -80,9 +80,9 @@ namespace Course_2_Tic_Tac_Toe_Client
 			while ((i = stream.Read(_bytes, 0, _bytes.Length)) != 0)
 			{
 				var data = Encoding.ASCII.GetString(_bytes, 0, i);
-				string[] move = {data};
+				var move = data.ToCharArray();
 
-				Game.makeMove(int.Parse(move[0]), int.Parse(move[1]), Player, Opponent);
+				Game.MakeMove(move[0], move[1], Player, Opponent);
 				CheckWinner();
 				Console.WriteLine(Game);
 			}
@@ -98,10 +98,10 @@ namespace Course_2_Tic_Tac_Toe_Client
 
 			Console.Write("Please give the Y coordinate for the move >");
 			moveToSend += Console.ReadLine();
-			string[] move = {moveToSend};
+			var move = moveToSend.ToCharArray();
 			var moveData = Encoding.ASCII.GetBytes(moveToSend);
 
-			Game.makeMove(int.Parse(move[0]), int.Parse(move[1]), Player, Opponent);
+			Game.MakeMove(move[0], move[1], Player, Opponent);
 
 			stream.Write(moveData, 0, moveData.Length);
 
