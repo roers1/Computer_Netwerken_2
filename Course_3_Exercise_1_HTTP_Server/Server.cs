@@ -34,49 +34,58 @@ namespace Course_3_InLesson_Exercise_1_HTTP_Server
 
 				while (true)
 				{
-					Console.WriteLine("Waiting for a connection");
 
-					//Accept incoming connection request if one is sended
+					//Tcp client accepteren als er een aanvraag naar de 'webpagina' wordt gedaan
 					TcpClient client = server.AcceptTcpClient();
-					Console.WriteLine("Connected!");
 
-					//Get a stream object for reading and writing
+					//Stream object verkrijgen om te kunnen lezen en schrijven naar de client
 					var stream = client.GetStream();
-
 
 					using (var sr = new StreamReader(stream))
 					{
 						var noInformation = false;
+						//Zolang er informatie komt vanuit de client blijft het ingelezen worden
 						while (!sr.EndOfStream && !noInformation)
 						{
-							// Loop to receive all the data sent by the client.
+							
 							var i = sr.ReadLine();
+
 							if (string.IsNullOrEmpty(i)) noInformation = true;
+
+							//De GET en Filename los maken van elkaar
 							var dataSplit = i?.Split(" ");
 
+							//Als er een GET method gegeven wordt dan hebben we alle informatie die benodigd is en kunnen we verder.
 							if (dataSplit[0].StartsWith("GET"))
 							{
+								//Filename uit de array halen
 								Filename = dataSplit[1].Remove(0, 1);
 								noInformation = true;
 							}
 						}
 
+						//Als de filename leeg is dan is het request niet geldig omdat we niks hebben om mee te werken
 						if (string.IsNullOrEmpty(Filename))
 						{
-							Console.WriteLine("NULL OF LEEG");
+							//Error response schrijven volgens protocol regels
 							var error = "HTTP/1.1 400 Bad request";
 							SendMessage(error, stream);
 						}
 						else
 						{
+							//Als het bestand bestaat kan hij uitgelezen worden
 							if (File.Exists(Filename))
 							{
-								Console.WriteLine("FILE BESTAAT");
+								//File uitlezen
 								var dataToSend = File.ReadAllLines(Filename);
-								Console.WriteLine(dataToSend);
+
+								//Response schrijven volgens protocol regels
 								var responseHeader = "HTTP/1.1 200 OK";
+
+								//Header verzenden
 								SendMessage(responseHeader, stream);
 
+								//body verzenden met de gegevens die gevraagd zijn
 								foreach (var x in dataToSend)
 								{
 									SendMessage(x, stream);
@@ -84,14 +93,14 @@ namespace Course_3_InLesson_Exercise_1_HTTP_Server
 							}
 							else
 							{
-								Console.WriteLine("FILE BESTAAT NIET");
+								//bestand is niet gevonden en er wordt een 404 terug gegeven
 								var error = "HTTP/1.1 404 Not found";
 								SendMessage(error, stream);
 							}
 						}
 					}
 
-					// Shutdown and end connection
+					//Als de gegevens verstuurd zijn stoppen we de verbinding
 					client.Close();
 				}
 			}
@@ -101,17 +110,17 @@ namespace Course_3_InLesson_Exercise_1_HTTP_Server
 			}
 			finally
 			{
-				// Stop listening for new clients.
+				//Stoppen indien nodig
 				server?.Stop();
 			}
-
-			Console.WriteLine("\nHit enter to continue...");
-			Console.Read();
 		}
 
 		private void SendMessage(string msg, Stream stream)
 		{
+			//bytes array aanmaken om de gegevens te verzenden
 			var response = Encoding.UTF8.GetBytes($"{msg}{Environment.NewLine}");
+
+			//meegekregen stream gebruiken om de gegevens te versturen
 			stream.Write(response, 0, response.Length);
 		}
 	}
