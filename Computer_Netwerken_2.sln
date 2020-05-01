@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course_4_InLesson_Exercise_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course_4_InLesson_Exercise_2_IMAP", "Course_4_InLesson_Exercise_2_IMAP\Course_4_InLesson_Exercise_2_IMAP.csproj", "{04E02D63-1B0D-4FCF-B286-AEE91AD6CFAC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course_4_InLesson_Exercise_3_SMTP", "Course_4_InLesson_Exercise_3_SMTP\Course_4_InLesson_Exercise_3_SMTP.csproj", "{BC898707-CAEE-4F1F-9C33-9A831872A184}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{04E02D63-1B0D-4FCF-B286-AEE91AD6CFAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04E02D63-1B0D-4FCF-B286-AEE91AD6CFAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04E02D63-1B0D-4FCF-B286-AEE91AD6CFAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC898707-CAEE-4F1F-9C33-9A831872A184}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC898707-CAEE-4F1F-9C33-9A831872A184}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC898707-CAEE-4F1F-9C33-9A831872A184}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC898707-CAEE-4F1F-9C33-9A831872A184}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
