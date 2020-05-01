@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="microsoft.windows.compatibility" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="test.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
