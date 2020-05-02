@@ -10,37 +10,36 @@ namespace Course_4_InLesson_Exercise_1_LDAP
 			const string LDAP_PATH = "LDAP://ldap.itd.umich.edu";
 			const string USERNAME = "Amy Newman";
 
-			using (var entry = new DirectoryEntry())
+			using var entry = new DirectoryEntry
 			{
-				entry.Path = LDAP_PATH;
-				entry.AuthenticationType = AuthenticationTypes.Anonymous;
+				Path = LDAP_PATH,
+				AuthenticationType = AuthenticationTypes.Anonymous
+			};
 
-				//cn = common name
-				var search = new DirectorySearcher(entry) {Filter = $"(cn={USERNAME})"};
-				search.SearchScope = SearchScope.Subtree;
+			//cn = common name
+			var search = new DirectorySearcher(entry) {Filter = $"(cn={USERNAME})", SearchScope = SearchScope.Subtree};
 
-				//ou = organizational unit
-				//search.PropertiesToLoad.Add("ou");
+			//ou = organizational unit
+			//search.PropertiesToLoad.Add("ou");
 
-				var person = search.FindAll();
+			var person = search.FindAll();
 
-				foreach (SearchResult searchResult in person)
+			foreach (SearchResult searchResult in person)
+			{
+				foreach (var displayname in searchResult.Properties["displayname"])
 				{
-					foreach (var displayname in searchResult.Properties["displayname"])
-					{
-						Console.WriteLine(displayname + "\r\n");
-					}
-
-					foreach (var propertiesPropertyName in searchResult.Properties.PropertyNames)
-					{
-						foreach (var propertie in searchResult.Properties[(string) propertiesPropertyName])
-						{
-							Console.WriteLine(propertiesPropertyName + ": " + propertie);
-						}
-					}
-
-					Console.WriteLine("--------------------\r\n");
+					Console.WriteLine(displayname + "\r\n");
 				}
+
+				foreach (var propertiesPropertyName in searchResult.Properties.PropertyNames)
+				{
+					foreach (var propertie in searchResult.Properties[(string)propertiesPropertyName])
+					{
+						Console.WriteLine(propertiesPropertyName + ": " + propertie);
+					}
+				}
+
+				Console.WriteLine("--------------------\r\n");
 			}
 		}
 	}
