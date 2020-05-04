@@ -10,7 +10,7 @@ namespace Course_4_InLesson_Exercise_1_LDAP
 			const string LDAP_PATH = "LDAP://ldap.itd.umich.edu";
 			const string USERNAME = "Amy Newman";
 
-			using var entry = new DirectoryEntry
+			var entry = new DirectoryEntry
 			{
 				Path = LDAP_PATH,
 				AuthenticationType = AuthenticationTypes.Anonymous

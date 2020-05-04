@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace Course_4_LDAP_Tool
 {
@@ -6,7 +8,8 @@ namespace Course_4_LDAP_Tool
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
+			Tool tool = new Tool();
+			tool.Start();
 		}
 	}
 }
