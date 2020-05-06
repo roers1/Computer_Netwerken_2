@@ -1,0 +1,12 @@
+﻿@model IList<Mail>
+
+@{
+    ViewData["Title"] = "Inbox";
+}
+
+<h1>Inbox</h1>
+@foreach (var mail in Model)
+{
+    <h1>@mail.Subject</h1>
+}
+
