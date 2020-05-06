@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Course_4_Email_Tool.Models
 {
-	public class Attachment
+	public class AttachmentCustom
 	{
 		public string Name { get; set; }
 		public string Type { get; set; }

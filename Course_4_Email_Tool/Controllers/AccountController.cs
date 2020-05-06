@@ -1,26 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Course_4_Email_Tool.Models;
 using MailKit.Net.Imap;
 using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 using MailKit;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
+using MailKit.Search;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Authorization;
 using MimeKit;
+using AttachmentCustom = Course_4_Email_Tool.Models.AttachmentCustom;
 
 namespace Course_4_Email_Tool.Controllers
 {
@@ -33,41 +27,16 @@ namespace Course_4_Email_Tool.Controllers
 			return Redirect("/Index");
 		}
 
-		public IActionResult Login(LoginModel model)
+		public IActionResult Login(ConfigurationModel config)
 		{
-			try
-			{
-				_client.Connect(model.IMAP_HOST, 993, SecureSocketOptions.SslOnConnect);
-			}
-			catch (SocketException)
-			{
-				TempData["Invalid Credentials"] = "Unknown HOST";
-			}
+			SaveConfig(config);
 
-			try
-			{
-				_client.Authenticate(model.Email, model.Password);
-				SaveConfig(new ConfigurationModel
-				{
-					Email = model.Email,
-					Password = model.Password,
-					IMAP_HOST = model.IMAP_HOST,
-					INCOMING_PORT_IMAP = model.INCOMING_PORT_IMAP,
-					OUTGOING_PORT_SMTP = model.OUTGOING_PORT_SMTP
-				});
-			}
-			catch (AuthenticationException ex)
-			{
-				Console.WriteLine(ex.Message);
-				TempData["Invalid Credentials"] = "Credentials were invalid, Please try again";
-				Redirect("/Index");
-			}
+			Authenticate();
 
 			Console.WriteLine(_client.IsConnected);
 			var mails = Inbox();
 
 			return View("Inbox", mails);
-
 		}
 
 		public void SaveConfig(ConfigurationModel model)
@@ -93,36 +62,173 @@ namespace Course_4_Email_Tool.Controllers
 					To = message.To.ToString(),
 					Message = message.HtmlBody,
 					SendDate = message.Date,
-					Subject = message.Subject
+					Subject = message.Subject,
+					MessageId = message.MessageId
 				};
 
 				var attachments = message.Attachments.ToList();
 
 				foreach (var attachment in attachments)
 				{
-					using (var memory = new MemoryStream())
+					using var memory = new MemoryStream();
+					var data = new AttachmentCustom
 					{
-						if (attachment is MimePart)
-							((MimePart) attachment).Content.DecodeTo(memory);
-						else
-							((MessagePart) attachment).Message.WriteTo(memory);
-
-						var bytes = memory.ToArray();
-
-						var data = new Attachment
-						{
-							Name = attachment.ContentType.Name,
-							Type = attachment.ContentType.MediaSubtype,
-							ContentBase64 = bytes
-						};
-						mailToShow.AttachmentsList.Add(data);
-					}
+						Name = attachment.ContentType.Name,
+						Type = attachment.ContentType.MediaSubtype,
+					};
+					mailToShow.AttachmentsList.Add(data);
 				}
 
 				mails.Add(mailToShow);
 			}
 
 			return mails;
+		}
+
+		public IActionResult ReturnToInbox()
+		{
+			var config = HttpContext.Session.Get<ConfigurationModel>("Config");
+
+			return RedirectToAction("Login", config);
+		}
+
+		public IActionResult Mail(string messageId)
+		{
+			return View(GetMail(messageId));
+		}
+
+		public Mail GetMail(string messageId)
+		{
+			Authenticate();
+
+			_client.Inbox.Open(FolderAccess.ReadOnly);
+			var uids = _client.Inbox.Search(SearchQuery.HeaderContains("Message-Id", messageId));
+
+			var message = _client.Inbox.GetMessage(uids.ElementAt(0));
+
+			var mailToShow = new Mail
+			{
+				From = message.From.ToString(),
+				To = message.To.ToString(),
+				Message = message.TextBody,
+				SendDate = message.Date,
+				Subject = message.Subject,
+				MessageId = message.MessageId
+			};
+
+			var attachments = message.Attachments.ToList();
+
+			foreach (var attachment in attachments)
+			{
+				using var memory = new MemoryStream();
+				if (attachment is MimePart part)
+					part.Content.DecodeTo(memory);
+				else
+					((MessagePart) attachment).Message.WriteTo(memory);
+
+				var bytes = memory.ToArray();
+
+				var data = new AttachmentCustom
+				{
+					Name = attachment.ContentType.Name,
+					Type = attachment.ContentType.MediaSubtype,
+					ContentBase64 = bytes
+				};
+				mailToShow.AttachmentsList.Add(data);
+			}
+
+			return mailToShow;
+		}
+
+		public IActionResult SaveAttachment(string messageId)
+		{
+			Authenticate();
+			_client.Inbox.Open(FolderAccess.ReadOnly);
+			var uids = _client.Inbox.Search(SearchQuery.HeaderContains("Message-Id", messageId));
+
+			var message = _client.Inbox.GetMessage(uids.ElementAt(0));
+
+			foreach (MimeEntity attachment in message.Attachments)
+			{
+				var fileName = attachment.ContentDisposition?.FileName ?? attachment.ContentType.Name;
+
+				using (var stream = System.IO.File.Create(fileName))
+				{
+					if (attachment is MessagePart)
+					{
+						var rfc822 = (MessagePart) attachment;
+
+						rfc822.Message.WriteTo(stream);
+					}
+					else
+					{
+						var part = (MimePart) attachment;
+
+						part.Content.DecodeTo(stream);
+					}
+				}
+			}
+
+			return View("Mail", GetMail(messageId));
+		}
+
+		public IActionResult Settings()
+		{
+			var config = HttpContext.Session.Get<ConfigurationModel>("Config");
+			return View(config);
+		}
+
+		public IActionResult SaveSettings(ConfigurationModel model)
+		{
+			SaveConfig(model);
+			return RedirectToAction("Login", model);
+		}
+
+		public IActionResult SendMail(SentMailModel mail)
+		{
+			var model = HttpContext.Session.Get<ConfigurationModel>("Config");
+
+			var client = new SmtpClient(model.SMTP_HOST, model.OUTGOING_PORT_SMTP)
+			{
+				Credentials = new NetworkCredential(model.Email, model.Password),
+				EnableSsl = true
+			};
+
+			MailMessage message = new MailMessage(model.Email,mail.To,mail.Subject,mail.Message);
+
+
+			return RedirectToAction("Login", model);
+		}
+
+		public void Authenticate()
+		{
+			var model = HttpContext.Session.Get<ConfigurationModel>("Config");
+			if (!_client.IsConnected)
+			{
+				try
+				{
+					_client.Connect(model.IMAP_HOST, model.INCOMING_PORT_IMAP, SecureSocketOptions.SslOnConnect);
+				}
+				catch (SocketException)
+				{
+					TempData["Invalid Credentials"] = "Unknown HOST";
+				}
+			}
+
+			if (!_client.IsAuthenticated)
+			{
+				try
+				{
+					_client.Authenticate(model.Email, model.Password);
+
+				}
+				catch (AuthenticationException ex)
+				{
+					Console.WriteLine(ex.Message);
+					TempData["Invalid Credentials"] = "Credentials were invalid, Please try again";
+					Redirect("/Index");
+				}
+			}
 		}
 	}
 
