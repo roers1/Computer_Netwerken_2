@@ -1,9 +1,5 @@
-const {
-  spawn
-} = require('child_process');
-const {
-  exec
-} = require('child_process');
+const {spawn} = require('child_process');
+const {exec} = require('child_process');
 const kill = require('tree-kill');
 
 const express = require('express');

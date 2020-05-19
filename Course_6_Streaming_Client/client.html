@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>StreamingApp</title>
+  <title>Streaming</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
   <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
   <link rel="stylesheet" type="text/css" href="css/style.css" />
@@ -11,99 +11,36 @@
 
 <body>
   <div class="mainContainer">
-    <h1 class="preview">PREVIEW</h1>
     <h1 class="live">LIVE</h1>
     <video id="videoElement" class="centeredVideo" controls autoplay width="1024" height="576">Your browser is too old which doesn't support HTML5 video.</video>
-  </div>
-  <br>
-  <div class="controls">
-    <button onclick="flvStartStream()">start stream</button>
-    <button onclick="flvStartPreview()">stop stream</button>
   </div>
   <script>
     var player = null;
     const socket = io();
 
-    flvStartPreview();
+    flvStartStream();
 
     function flvStartStream() {
-      flvDestroyPreview(() => console.log('DESTROYED PREVIEW'));
 
-      setTimeout(() => {
+      if (player == null) {
+        player = document.getElementById('videoElement');
+        player.unload;
 
-        if (player == null) {
-          player = document.getElementById('videoElement');
-          player.unload;
-
-          if (flvjs.isSupported()) {
-            flvPlayer = flvjs.createPlayer({
-              type: 'flv',
-              "isLive": true,
-              url: 'http://localhost:8000/live/test.flv',
-            });
-
-            document.getElementsByClassName('live')[0].style.visibility = 'visible';
-            document.getElementsByClassName('preview')[0].style.visibility = 'hidden';
-            flvPlayer.attachMediaElement(videoElement);
-            flvPlayer.load();
-          }
+        if (flvjs.isSupported()) {
+          flvPlayer = flvjs.createPlayer({
+            type: 'flv',
+            "isLive": true,
+            url: 'http://localhost:8000/live/test.flv',
+          });
+          flvPlayer.attachMediaElement(videoElement);
+          flvPlayer.load();
         }
+      }
 
-        console.log('STARTING STREAM');
+      console.log('STARTING STREAM');
 
-        player.play();
-        socket.emit('start-streaming', {});
-      }, 500);
-    }
+      player.play();
 
-    function flvPause() {
-      console.log('PAUSING PLAYER');
-      player.pause();
-    }
-
-    function flvStartPreview() {
-      flvDestroyStream(() => console.log('DESTROYED STREAM'));
-
-      setTimeout(() => {
-
-        console.log('STARTING PREVIEW');
-        socket.emit('start-preview', {});
-
-        if (player == null) {
-          player = document.getElementById('videoElement');
-          player.unload;
-
-          if (flvjs.isSupported()) {
-            flvPlayer = flvjs.createPlayer({
-              "type": 'flv',
-              isLive: true,
-              url: 'http://localhost:8000/live/preview.flv',
-            });
-
-            document.getElementsByClassName('live')[0].style.visibility = 'hidden';
-            document.getElementsByClassName('preview')[0].style.visibility = 'visible';
-
-            flvPlayer.attachMediaElement(videoElement);
-            flvPlayer.load();
-          }
-
-          player.play();
-        }
-      }, 500);
-    }
-
-    function flvDestroyStream(_callback) {
-      socket.emit('stop-streaming', {});
-      player = null;
-      flvPlayer = null;
-      _callback();
-    }
-
-    function flvDestroyPreview(_callback) {
-      socket.emit('stop-streaming', {});
-      player = null;
-      flvPlayer = null;
-      _callback();
     }
   </script>
 </body>
