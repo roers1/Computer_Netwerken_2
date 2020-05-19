@@ -1,0 +1,16 @@
+{
+  "name": "course_6_streaming_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ffmpeg": "ffmpeg -f dshow -video_size 640_360 -i video=\"HP Wide Vision HD Camera\" -pix_fmt yuv420p -c:v libx264  -preset ultrafast -tune zerolatency -f flv rtmp://localhost/live/test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-media-server": "^2.1.8",
+    "video.js": "^7.7.6"
+  }
+}

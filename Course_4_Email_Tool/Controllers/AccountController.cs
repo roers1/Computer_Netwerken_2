@@ -20,8 +20,6 @@ namespace Course_4_Email_Tool.Controllers
 {
 	public class AccountController : Controller
 	{
-		private ImapClient _client = new ImapClient();
-
 		public IActionResult Index()
 		{
 			return Redirect("/Index");
@@ -30,13 +28,41 @@ namespace Course_4_Email_Tool.Controllers
 		public IActionResult Login(ConfigurationModel config)
 		{
 			SaveConfig(config);
+			using (var _client = new ImapClient())
+			{
+				var model = HttpContext.Session.Get<ConfigurationModel>("Config");
+				if (!_client.IsConnected)
+				{
+					try
+					{
+						_client.Connect(model.IMAP_HOST, model.INCOMING_PORT_IMAP, SecureSocketOptions.SslOnConnect);
+					}
+					catch (SocketException)
+					{
+						TempData["Invalid Credentials"] = "Unknown HOST";
+					}
+				}
 
-			Authenticate();
+				if (!_client.IsAuthenticated)
+				{
+					try
+					{
+						_client.Authenticate(model.Email, model.Password);
+					}
+					catch (AuthenticationException ex)
+					{
+						Console.WriteLine(ex.Message);
+						TempData["Invalid Credentials"] = "Credentials were invalid, Please try again";
+						Redirect("/Index");
+					}
+				}
 
-			Console.WriteLine(_client.IsConnected);
-			var mails = Inbox();
+				Console.WriteLine(_client.IsConnected);
+				var mails = Inbox(_client);
 
-			return View("Inbox", mails);
+				_client.Disconnect(true);
+				return View("Inbox", mails);
+			}
 		}
 
 		public void SaveConfig(ConfigurationModel model)
@@ -46,7 +72,7 @@ namespace Course_4_Email_Tool.Controllers
 			HttpContext.Session.Set("Config", configModel);
 		}
 
-		public IList<Mail> Inbox()
+		public IList<Mail> Inbox(ImapClient _client)
 		{
 			_client.Inbox.Open(FolderAccess.ReadOnly);
 			var config = HttpContext.Session.Get<ConfigurationModel>("Config");
@@ -82,6 +108,8 @@ namespace Course_4_Email_Tool.Controllers
 				mails.Add(mailToShow);
 			}
 
+			_client.Inbox.Close();
+			_client.Disconnect(true);
 			return mails;
 		}
 
@@ -92,14 +120,39 @@ namespace Course_4_Email_Tool.Controllers
 			return RedirectToAction("Login", config);
 		}
 
-		public IActionResult Mail(string messageId)
+		public IActionResult Mail(ImapClient _client, string messageId)
 		{
-			return View(GetMail(messageId));
+			return View(GetMail(_client, messageId));
 		}
 
-		public Mail GetMail(string messageId)
+		public Mail GetMail(ImapClient _client, string messageId)
 		{
-			Authenticate();
+			var model = HttpContext.Session.Get<ConfigurationModel>("Config");
+			if (!_client.IsConnected)
+			{
+				try
+				{
+					_client.Connect(model.IMAP_HOST, model.INCOMING_PORT_IMAP, SecureSocketOptions.SslOnConnect);
+				}
+				catch (SocketException)
+				{
+					TempData["Invalid Credentials"] = "Unknown HOST";
+				}
+			}
+
+			if (!_client.IsAuthenticated)
+			{
+				try
+				{
+					_client.Authenticate(model.Email, model.Password);
+				}
+				catch (AuthenticationException ex)
+				{
+					Console.WriteLine(ex.Message);
+					TempData["Invalid Credentials"] = "Credentials were invalid, Please try again";
+					Redirect("/Index");
+				}
+			}
 
 			_client.Inbox.Open(FolderAccess.ReadOnly);
 			var uids = _client.Inbox.Search(SearchQuery.HeaderContains("Message-Id", messageId));
@@ -137,70 +190,12 @@ namespace Course_4_Email_Tool.Controllers
 				mailToShow.AttachmentsList.Add(data);
 			}
 
+			_client.Inbox.Close();
+			_client.Disconnect(true);
 			return mailToShow;
 		}
 
-		public IActionResult SaveAttachment(string messageId)
-		{
-			Authenticate();
-			_client.Inbox.Open(FolderAccess.ReadOnly);
-			var uids = _client.Inbox.Search(SearchQuery.HeaderContains("Message-Id", messageId));
-
-			var message = _client.Inbox.GetMessage(uids.ElementAt(0));
-
-			foreach (MimeEntity attachment in message.Attachments)
-			{
-				var fileName = attachment.ContentDisposition?.FileName ?? attachment.ContentType.Name;
-
-				using (var stream = System.IO.File.Create(fileName))
-				{
-					if (attachment is MessagePart)
-					{
-						var rfc822 = (MessagePart) attachment;
-
-						rfc822.Message.WriteTo(stream);
-					}
-					else
-					{
-						var part = (MimePart) attachment;
-
-						part.Content.DecodeTo(stream);
-					}
-				}
-			}
-
-			return View("Mail", GetMail(messageId));
-		}
-
-		public IActionResult Settings()
-		{
-			var config = HttpContext.Session.Get<ConfigurationModel>("Config");
-			return View(config);
-		}
-
-		public IActionResult SaveSettings(ConfigurationModel model)
-		{
-			SaveConfig(model);
-			return RedirectToAction("Login", model);
-		}
-
-		public IActionResult SendMail(SentMailModel mail)
-		{
-			var model = HttpContext.Session.Get<ConfigurationModel>("Config");
-
-			var client = new SmtpClient(model.SMTP_HOST, model.OUTGOING_PORT_SMTP)
-			{
-				Credentials = new NetworkCredential(model.Email, model.Password),
-				EnableSsl = true
-			};
-
-			MailMessage message = new MailMessage(model.Email,mail.To,mail.Subject,mail.Message);
-
-
-			return RedirectToAction("Login", model);
-		}
-
-		public void Authenticate()
+		public IActionResult SaveAttachment(ImapClient _client, string messageId)
 		{
 			var model = HttpContext.Session.Get<ConfigurationModel>("Config");
 			if (!_client.IsConnected)
@@ -220,7 +215,6 @@ namespace Course_4_Email_Tool.Controllers
 				try
 				{
 					_client.Authenticate(model.Email, model.Password);
-
 				}
 				catch (AuthenticationException ex)
 				{
@@ -229,7 +223,65 @@ namespace Course_4_Email_Tool.Controllers
 					Redirect("/Index");
 				}
 			}
+
+			_client.Inbox.Open(FolderAccess.ReadOnly);
+			var uids = _client.Inbox.Search(SearchQuery.HeaderContains("Message-Id", messageId));
+
+			var message = _client.Inbox.GetMessage(uids.ElementAt(0));
+
+			foreach (MimeEntity attachment in message.Attachments)
+			{
+				var fileName = attachment.ContentDisposition?.FileName ?? attachment.ContentType.Name;
+
+				using (var stream = System.IO.File.Create("C:\\Users\\mimeKitAttachments\\" + fileName))
+				{
+					if (attachment is MessagePart)
+					{
+						var rfc822 = (MessagePart) attachment;
+
+						rfc822.Message.WriteTo(stream);
+					}
+					else
+					{
+						var part = (MimePart) attachment;
+
+						part.Content.DecodeTo(stream);
+					}
+				}
+			}
+
+			_client.Inbox.Close();
+			_client.Disconnect(true);
+			return View("Mail", GetMail(_client, messageId));
 		}
+
+		public IActionResult Settings()
+		{
+			var config = HttpContext.Session.Get<ConfigurationModel>("Config");
+			return View(config);
+		}
+
+		public IActionResult SaveSettings(ConfigurationModel model)
+		{
+			SaveConfig(model);
+			return RedirectToAction("Login", model);
+		}
+
+		//public IActionResult SendMail(SentMailModel mail)
+		//{
+		//	var model = HttpContext.Session.Get<ConfigurationModel>("Config");
+
+		//	var client = new SmtpClient(model.SMTP_HOST, model.OUTGOING_PORT_SMTP)
+		//	{
+		//		Credentials = new NetworkCredential(model.Email, model.Password),
+		//		EnableSsl = true
+		//	};
+
+		//	MailMessage message = new MailMessage(model.Email,mail.To,mail.Subject,mail.Message);
+
+
+		//	return RedirectToAction("Login", model);
+		//}
 	}
 
 	public static class SessionExtensions

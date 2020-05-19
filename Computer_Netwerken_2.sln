@@ -32,7 +32,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course_4_InLesson_Exercise_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course_4_LDAP_Tool", "Course_4_LDAP_Tool\Course_4_LDAP_Tool.csproj", "{4370D329-8E50-483F-8911-767C27C93DF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course_4_Email_Tool", "Course_4_Email_Tool\Course_4_Email_Tool.csproj", "{DFF7747B-3DA8-4889-86BC-CCA2DE196988}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course_4_Email_Tool", "Course_4_Email_Tool\Course_4_Email_Tool.csproj", "{DFF7747B-3DA8-4889-86BC-CCA2DE196988}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
