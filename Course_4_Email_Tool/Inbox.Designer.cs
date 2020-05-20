@@ -32,6 +32,13 @@
 			this.Label_LoggedInAs = new System.Windows.Forms.Label();
 			this.button_settings = new System.Windows.Forms.Button();
 			this.button_sent = new System.Windows.Forms.Button();
+			this.dataGridView1 = new System.Windows.Forms.DataGridView();
+			this.Subject = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Sender = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+			this.button_refresh = new System.Windows.Forms.Button();
+			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// Label_LoggedUser
@@ -72,17 +79,69 @@
 			this.button_sent.UseVisualStyleBackColor = true;
 			this.button_sent.Click += new System.EventHandler(this.button_sent_Click);
 			// 
+			// dataGridView1
+			// 
+			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Subject,
+            this.Sender,
+            this.Date});
+			this.dataGridView1.Location = new System.Drawing.Point(442, 12);
+			this.dataGridView1.Name = "dataGridView1";
+			this.dataGridView1.Size = new System.Drawing.Size(346, 150);
+			this.dataGridView1.TabIndex = 4;
+			// 
+			// Subject
+			// 
+			this.Subject.DataPropertyName = "Subject";
+			this.Subject.HeaderText = "Subject";
+			this.Subject.Name = "Subject";
+			// 
+			// Sender
+			// 
+			this.Sender.DataPropertyName = "Sender";
+			this.Sender.HeaderText = "Sender";
+			this.Sender.Name = "Sender";
+			// 
+			// Date
+			// 
+			this.Date.DataPropertyName = "Date";
+			this.Date.HeaderText = "Date";
+			this.Date.Name = "Date";
+			// 
+			// webBrowser1
+			// 
+			this.webBrowser1.Location = new System.Drawing.Point(16, 175);
+			this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+			this.webBrowser1.Name = "webBrowser1";
+			this.webBrowser1.Size = new System.Drawing.Size(772, 263);
+			this.webBrowser1.TabIndex = 5;
+			// 
+			// button_refresh
+			// 
+			this.button_refresh.Location = new System.Drawing.Point(16, 116);
+			this.button_refresh.Name = "button_refresh";
+			this.button_refresh.Size = new System.Drawing.Size(75, 23);
+			this.button_refresh.TabIndex = 6;
+			this.button_refresh.Text = "Refresh";
+			this.button_refresh.UseVisualStyleBackColor = true;
+			this.button_refresh.Click += new System.EventHandler(this.button_refresh_Click);
+			// 
 			// Inbox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.Controls.Add(this.button_refresh);
+			this.Controls.Add(this.webBrowser1);
+			this.Controls.Add(this.dataGridView1);
 			this.Controls.Add(this.button_sent);
 			this.Controls.Add(this.button_settings);
 			this.Controls.Add(this.Label_LoggedInAs);
 			this.Controls.Add(this.Label_LoggedUser);
 			this.Name = "Inbox";
 			this.Text = "Inbox";
+			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -94,5 +153,11 @@
 		private System.Windows.Forms.Label Label_LoggedInAs;
 		private System.Windows.Forms.Button button_settings;
 		private System.Windows.Forms.Button button_sent;
+		private System.Windows.Forms.DataGridView dataGridView1;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Subject;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Sender;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Date;
+		private System.Windows.Forms.WebBrowser webBrowser1;
+		private System.Windows.Forms.Button button_refresh;
 	}
 }

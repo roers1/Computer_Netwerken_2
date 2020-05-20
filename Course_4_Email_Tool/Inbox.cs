@@ -45,5 +45,10 @@ namespace Course_4_Email_Tool
 			write.StartPosition = FormStartPosition.Manual;
 			write.Show();
 		}
+
+		private void button_refresh_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 }
