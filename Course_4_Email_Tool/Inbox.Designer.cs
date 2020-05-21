@@ -38,7 +38,11 @@
 			this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.webBrowser1 = new System.Windows.Forms.WebBrowser();
 			this.button_refresh = new System.Windows.Forms.Button();
+			this.dataGridView2 = new System.Windows.Forms.DataGridView();
+			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+			this.label_download_status = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// Label_LoggedUser
@@ -86,10 +90,11 @@
             this.Subject,
             this.Sender,
             this.Date});
-			this.dataGridView1.Location = new System.Drawing.Point(442, 12);
+			this.dataGridView1.Location = new System.Drawing.Point(97, 46);
 			this.dataGridView1.Name = "dataGridView1";
-			this.dataGridView1.Size = new System.Drawing.Size(346, 150);
+			this.dataGridView1.Size = new System.Drawing.Size(344, 116);
 			this.dataGridView1.TabIndex = 4;
+			this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
 			// 
 			// Subject
 			// 
@@ -127,11 +132,35 @@
 			this.button_refresh.UseVisualStyleBackColor = true;
 			this.button_refresh.Click += new System.EventHandler(this.button_refresh_Click);
 			// 
+			// dataGridView2
+			// 
+			this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dataGridView2.Location = new System.Drawing.Point(548, 46);
+			this.dataGridView2.Name = "dataGridView2";
+			this.dataGridView2.Size = new System.Drawing.Size(143, 116);
+			this.dataGridView2.TabIndex = 7;
+			this.dataGridView2.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
+			// 
+			// openFileDialog1
+			// 
+			this.openFileDialog1.FileName = "openFileDialog1";
+			// 
+			// label_download_status
+			// 
+			this.label_download_status.AutoSize = true;
+			this.label_download_status.Location = new System.Drawing.Point(548, 27);
+			this.label_download_status.Name = "label_download_status";
+			this.label_download_status.Size = new System.Drawing.Size(13, 13);
+			this.label_download_status.TabIndex = 8;
+			this.label_download_status.Text = "  ";
+			// 
 			// Inbox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.Controls.Add(this.label_download_status);
+			this.Controls.Add(this.dataGridView2);
 			this.Controls.Add(this.button_refresh);
 			this.Controls.Add(this.webBrowser1);
 			this.Controls.Add(this.dataGridView1);
@@ -142,6 +171,7 @@
 			this.Name = "Inbox";
 			this.Text = "Inbox";
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -159,5 +189,8 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn Date;
 		private System.Windows.Forms.WebBrowser webBrowser1;
 		private System.Windows.Forms.Button button_refresh;
+		private System.Windows.Forms.DataGridView dataGridView2;
+		private System.Windows.Forms.OpenFileDialog openFileDialog1;
+		private System.Windows.Forms.Label label_download_status;
 	}
 }
