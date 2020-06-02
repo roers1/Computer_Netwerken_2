@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "ffmpeg": "ffmpeg -f dshow -video_size 640_360 -i video=\"HP Wide Vision HD Camera\" -pix_fmt yuv420p -c:v libx264  -preset ultrafast -tune zerolatency -f flv rtmp://localhost/live/test"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",

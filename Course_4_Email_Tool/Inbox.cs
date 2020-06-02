@@ -34,9 +34,9 @@ namespace Course_4_Email_Tool
 
 			Label_LoggedInAs.Text = ec.ImapUsername;
 
-			ic.Inbox.Open(FolderAccess.ReadOnly);
+			_ic.Inbox.Open(FolderAccess.ReadOnly);
 
-			mailsToShow = ic.Inbox.Count > 10 ? 10 : ic.Inbox.Count();
+			mailsToShow = _ic.Inbox.Count > 10 ? 10 : ic.Inbox.Count();
 
 			try
 			{
@@ -50,7 +50,7 @@ namespace Course_4_Email_Tool
 
 				for (int i = 0; i < mailsToShow; i++)
 				{
-					var message = ic.Inbox.GetMessage(i);
+					var message = _ic.Inbox.GetMessage(i);
 					dt.Rows.Add(new object[]
 					{
 						message.Subject, message.From, message.Date.ToLocalTime(), message.MessageId
@@ -84,6 +84,36 @@ namespace Course_4_Email_Tool
 
 		private void button_refresh_Click(object sender, EventArgs e)
 		{
+			if (!_ic.Inbox.IsOpen)
+			{
+				_ic.Inbox.Open(FolderAccess.ReadOnly);
+			}
+
+			mailsToShow = _ic.Inbox.Count > 10 ? 10 : _ic.Inbox.Count();
+
+			try
+			{
+				dt = new DataTable("Inbox");
+				dt.Columns.Add("Subject", typeof(string));
+				dt.Columns.Add("Sender", typeof(string));
+				dt.Columns.Add("Date", typeof(string));
+				dt.Columns.Add("Id", typeof(string));
+
+				dataGridView1.DataSource = dt;
+
+				for (int i = 0; i < mailsToShow; i++)
+				{
+					var message = _ic.Inbox.GetMessage(i);
+					dt.Rows.Add(new object[]
+					{
+						message.Subject, message.From, message.Date.ToLocalTime(), message.MessageId
+					});
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.Write(ex.Message);
+			}
 		}
 
 		private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -94,7 +124,7 @@ namespace Course_4_Email_Tool
 				dt.Rows[e.RowIndex]["Id"].ToString()));
 			currentMail = uids[0];
 			var message = _ic.Inbox.GetMessage(currentMail);
-			webBrowser1.DocumentText = message.HtmlBody;
+			webBrowser1.DocumentText = message.HtmlBody ?? message.TextBody;
 
 			attachmentDataTable = new DataTable();
 			attachmentDataTable.Columns.Add("FileName", typeof(string));
@@ -115,7 +145,6 @@ namespace Course_4_Email_Tool
 
 			if (result != DialogResult.OK || string.IsNullOrWhiteSpace(fbd.SelectedPath)) return;
 
-			
 
 			var message = _ic.Inbox.GetMessage(currentMail);
 			var attachmentName = attachmentDataTable.Rows[e.RowIndex]["FileName"].ToString();
